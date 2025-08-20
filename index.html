@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+
+<body>
+    <div id="welcome-screen">
+        <div class="a"></div>
+        <div class="b"></div>
+        <div class="c"></div>
+
+        <div class="welcome-content">
+            <h1 style="color: #001eff; font-size: 80px;">Age</h1>
+            <h1 style="color: #eb5360; font-size: 80px;">Calculator</h1>
+            <p>We're thrilled to have you here. Click below to find your exact age.</p>
+
+            <button type="button" class="btn" id="get-started-button">
+                <strong>GET STARTED</strong>
+                <div id="container-stars">
+                    <div id="stars"></div>
+                </div>
+
+                <div id="glow">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+            </button>
+            <div class="space"></div>
+        </div>
+    </div>
+
+    <div class="container" id="main-content" style="position: relative;">
+
+
+        <label for="theme" class="theme"
+            style="justify-content: flex-end; width: 100%; display: flex; margin-bottom: 1rem; gap: 0.5rem; font-size: 0.8rem; user-select: none;">
+            <span>Light</span>
+            <span class="theme__toggle-wrap">
+                <input id="theme" class="theme__toggle" type="checkbox" role="switch" name="theme" value="dark" />
+                <span class="theme__fill"></span>
+                <span class="theme__icon">
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                    <span class="theme__icon-part"></span>
+                </span>
+            </span>
+            <span>Dark</span>
+        </label>
+
+
+        <h1 class="text-3xl font-bold mb-8">Age Calculator 🎂</h1>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="input-group">
+                <label for="day">Day</label>
+                <input type="number" id="day" placeholder="DD" />
+            </div>
+            <div class="input-group">
+                <label for="month">Month</label>
+                <input type="number" id="month" placeholder="MM" />
+            </div>
+            <div class="input-group">
+                <label for="year">Year</label>
+                <input type="number" id="year" placeholder="YYYY" />
+            </div>
+        </div>
+
+        <button id="calculateBtn" class="calculateBtn-pushable" role="button">
+            <span class="calculateBtn-shadow"></span>
+            <span class="calculateBtn-edge"></span>
+            <span class="calculateBtn-front text">Calculate Age</span>
+        </button>
+
+        <div id="errorMessage" class="error-message hidden mb-4"></div>
+
+        <div id="result" class="result-box">
+            Your age will appear here.
+        </div>
+    </div>
+
+    <footer>
+        <ul>
+            <li><img src="LOGO_STARKLORD-removebg-preview.png" alt="LOGO" /></li>
+            <li>Made with &#9829; by STARKLORD</li>
+            <li>&#169;2025</li>
+        </ul>
+    </footer>
+
+    <script src="script.js"></script> 
+
+</body>
+
+</html>
