@@ -7,7 +7,9 @@
     <title>Age Calculator</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 
 <body>
@@ -38,7 +40,7 @@
 
     <div class="container" id="main-content" style="position: relative;">
 
-
+        <!-- toggle theme -->
         <label for="theme" class="theme"
             style="justify-content: flex-end; width: 100%; display: flex; margin-bottom: 1rem; gap: 0.5rem; font-size: 0.8rem; user-select: none;">
             <span>Light</span>
@@ -60,21 +62,20 @@
             <span>Dark</span>
         </label>
 
-
         <h1 class="text-3xl font-bold mb-8">Age Calculator 🎂</h1>
 
         <div class="grid grid-cols-3 gap-4 mb-6">
             <div class="input-group">
                 <label for="day">Day</label>
-                <input type="number" id="day" placeholder="DD" />
+                <input type="number" id="day" placeholder="DD" maxlength="2" />
             </div>
             <div class="input-group">
                 <label for="month">Month</label>
-                <input type="number" id="month" placeholder="MM" />
+                <input type="number" id="month" placeholder="MM" maxlength="2" />
             </div>
             <div class="input-group">
                 <label for="year">Year</label>
-                <input type="number" id="year" placeholder="YYYY" />
+                <input type="number" id="year" placeholder="YYYY" maxlength="4" />
             </div>
         </div>
 
@@ -89,6 +90,11 @@
         <div id="result" class="result-box">
             Your age will appear here.
         </div>
+
+        <button id="shareButton">Share Result <i class="fas fa-share-alt"></i></button>
+        
+        <div id="screenshotOutput"></div>
+
     </div>
 
     <footer>
@@ -99,7 +105,7 @@
         </ul>
     </footer>
 
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
 
 </body>
 
