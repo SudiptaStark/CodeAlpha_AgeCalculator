@@ -25,6 +25,20 @@ const calculateBtn = document.getElementById("calculateBtn");
 const resultDiv = document.getElementById("result");
 const errorMessageDiv = document.getElementById("errorMessage");
 
+
+// input focus automatically shifts to the next input field
+dayInput.addEventListener('input', function () {
+    if (this.value.length >= this.maxLength) {
+        monthInput.focus();
+    }
+});
+monthInput.addEventListener('input', function () {
+    if (this.value.length >= this.maxLength) {
+        yearInput.focus();
+    }
+});
+
+
 function displayError(message) {
     errorMessageDiv.textContent = message;
     errorMessageDiv.classList.remove("hidden");
@@ -100,8 +114,10 @@ function calculateAge() {
     resultDiv.textContent = `You are ${years} years, ${months} months, and ${days} days old.`;
 }
 
+// Add event listener to the button
 calculateBtn.addEventListener("click", calculateAge);
 
+// Allowing pressing Enter key in input fields to trigger calculation
 [dayInput, monthInput, yearInput].forEach((input) => {
     input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") calculateAge();
@@ -111,6 +127,38 @@ calculateBtn.addEventListener("click", calculateAge);
 // Set max year for the year input dynamically
 yearInput.max = new Date().getFullYear();
 
+
+
+// logic for Share Button to Trigger Capture and Share:
+document.getElementById('shareButton').addEventListener('click', async () => {
+  const mainDiv = document.getElementById('main-content');
+
+  try {
+    const canvas = await html2canvas(mainDiv);
+    
+    canvas.toBlob(async (blob) => {
+      if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'age-calculator.png', { type: blob.type })] })) {
+        // Use Web Share API to share the image
+        await navigator.share({
+          files: [new File([blob], 'age-calculator.png', { type: blob.type })],
+          title: 'Age Calculator Result',
+          text: 'Check out my age calculation result!'
+        });
+      } 
+      else {
+        // Fallback: download the image
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'age-calculator.png';
+        link.click();
+        URL.revokeObjectURL(link.href);
+        alert('Image downloaded. Sharing is not supported on this browser.');
+      }
+    });
+  } catch (error) {
+    console.error('Error capturing div:', error);
+  }
+});
 
 
 // Theme toggle logic
