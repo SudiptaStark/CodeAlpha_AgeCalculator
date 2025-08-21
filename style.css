@@ -322,9 +322,7 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     outline-offset: 4px;
     transition: filter 250ms;
-    user-select: none;
-    touch-action: manipulation;
-    margin-top: 1rem;
+    margin: 0.5rem;
 }
 
 .calculateBtn-shadow {
@@ -690,5 +688,41 @@ body.dark-mode input[type="number"] {
 
     .theme__toggle:focus-visible {
         box-shadow: 0 0 0 0.125em var(--primary);
+    }
+}
+
+/* share button */
+#shareButton {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+#shareButton:hover {
+    background-color: #fff;
+}
+
+#shareButton:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+    #shareButton {
+        min-width: 120px;
+        padding: 0 25px;
     }
 }
