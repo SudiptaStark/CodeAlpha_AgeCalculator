@@ -79,18 +79,17 @@ function calculateAge() {
         return;
     }
 
-    const birthDate = new Date(year, month - 1, day);
+    // Create Date objects
+    const birthDate = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript Date
     const today = new Date();
 
-    if (
-        birthDate.getMonth() !== month - 1 ||
-        birthDate.getDate() !== day ||
-        birthDate.getFullYear() !== year
-    ) {
-        displayError("Invalid date. Please check day and month for the given year.");
+    // Validate the date itself (e.g., Feb 30th)
+    if (birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day || birthDate.getFullYear() !== year) {
+        displayError('Invalid date. Please check day and month for the given year.');
         return;
     }
 
+    // Check if birth date is in the future
     if (birthDate > today) {
         displayError("Date of birth cannot be in the future.");
         return;
@@ -100,8 +99,10 @@ function calculateAge() {
     let months = today.getMonth() - birthDate.getMonth();
     let days = today.getDate() - birthDate.getDate();
 
+    // Adjust for negative days or months
     if (days < 0) {
         months--;
+        // Get the number of days in the previous month
         const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
         days += prevMonth.getDate();
     }
@@ -111,7 +112,50 @@ function calculateAge() {
         months += 12;
     }
 
+    // Display the result
     resultDiv.textContent = `You are ${years} years, ${months} months, and ${days} days old.`;
+    // References to new divs
+    const ageNearerBirthdayDiv = document.getElementById('age-nearer-birthday');
+    const ageLastBirthdayDiv = document.getElementById('age-last-birthday');
+    const nextBirthdayInDiv = document.getElementById('next-birthday-in');
+
+    // Calculate age at last birthday (which is just years)
+    const ageLastBirthday = years;
+
+    // Calculate age nearer birthday:
+    // We check whether the next birthday is closer than the last birthday.
+    // Next birthday date this year or next year:
+    let nextBirthdayYear = today.getFullYear();
+
+    if (today.getMonth() > birthDate.getMonth() ||
+        (today.getMonth() === birthDate.getMonth() && today.getDate() > birthDate.getDate())
+    ) {
+        nextBirthdayYear += 1;
+    }
+    const nextBirthday = new Date(nextBirthdayYear, birthDate.getMonth(), birthDate.getDate());
+
+    //calculating the number of milliseconds in a single day
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    // Calculate difference in days to next birthday
+    // subtracting one Date object from another in JavaScript, the difference is in milliseconds.
+    const diffToNextBirthday = Math.ceil((nextBirthday - today) / oneDay);
+
+    // Calculate previous birthday before today
+    const lastBirthdayYear = nextBirthdayYear - 1;
+    const lastBirthday = new Date(lastBirthdayYear, birthDate.getMonth(), birthDate.getDate());
+    const diffToLastBirthday = Math.ceil((today - lastBirthday) / oneDay);
+
+    // Determine which birthday is nearer
+    const ageNearerBirthdayValue = diffToNextBirthday < diffToLastBirthday ? ageLastBirthday + 1 : ageLastBirthday;
+
+    // Display age nearer birthday and age last birthday
+    ageNearerBirthdayDiv.textContent = ageNearerBirthdayValue;
+    ageLastBirthdayDiv.textContent = ageLastBirthday;
+
+    // Display "next birthday in ... " in days
+    nextBirthdayInDiv.textContent = `${diffToNextBirthday} day${diffToNextBirthday === 1 ? '' : 's'}`;
+
 }
 
 // Add event listener to the button
@@ -131,33 +175,33 @@ yearInput.max = new Date().getFullYear();
 
 // logic for Share Button to Trigger Capture and Share:
 document.getElementById('shareButton').addEventListener('click', async () => {
-  const mainDiv = document.getElementById('main-content');
+    const mainDiv = document.getElementById('main-content');
 
-  try {
-    const canvas = await html2canvas(mainDiv);
-    
-    canvas.toBlob(async (blob) => {
-      if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'age-calculator.png', { type: blob.type })] })) {
-        // Use Web Share API to share the image
-        await navigator.share({
-          files: [new File([blob], 'age-calculator.png', { type: blob.type })],
-          title: 'Age Calculator Result',
-          text: 'Check out my age calculation result!'
+    try {
+        const canvas = await html2canvas(mainDiv);
+
+        canvas.toBlob(async (blob) => {
+            if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'age-calculator.png', { type: blob.type })] })) {
+                // Use Web Share API to share the image
+                await navigator.share({
+                    files: [new File([blob], 'age-calculator.png', { type: blob.type })],
+                    title: 'Age Calculator Result',
+                    text: 'Check out my age calculation result!'
+                });
+            }
+            else {
+                // Fallback: download the image
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'age-calculator.png';
+                link.click();
+                URL.revokeObjectURL(link.href);
+                alert('Image downloaded. Sharing is not supported on this browser.');
+            }
         });
-      } 
-      else {
-        // Fallback: download the image
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'age-calculator.png';
-        link.click();
-        URL.revokeObjectURL(link.href);
-        alert('Image downloaded. Sharing is not supported on this browser.');
-      }
-    });
-  } catch (error) {
-    console.error('Error capturing div:', error);
-  }
+    } catch (error) {
+        console.error('Error capturing div:', error);
+    }
 });
 
 
